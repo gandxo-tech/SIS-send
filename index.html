@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Envoyer un message tout en anonymat</title>
+  <meta charset="UTF-8" />
+  <title>Envoyer un message</title>
   <style>
     body {
       background-color: #b6e5f7;
@@ -15,7 +15,6 @@
       align-items: center;
       min-height: 100vh;
     }
-
     h2#recipient {
       margin-top: 40px;
       color: #0099cc;
@@ -23,7 +22,6 @@
       font-weight: 700;
       letter-spacing: 1.2px;
     }
-
     form {
       background: #ccefff;
       padding: 25px 30px;
@@ -34,11 +32,9 @@
       max-width: 500px;
       transition: box-shadow 0.3s ease;
     }
-
     form:hover {
       box-shadow: 0 6px 25px rgba(0, 153, 204, 0.5);
     }
-
     textarea {
       width: 100%;
       padding: 15px;
@@ -54,13 +50,11 @@
       align-content: center;
       justify-content: center;
     }
-
     textarea:focus {
       outline: none;
       border-color: #0099cc;
       box-shadow: 0 0 8px #00ccffaa;
     }
-
     button {
       padding: 14px 30px;
       background: linear-gradient(90deg, #00bfff, #00ccff);
@@ -76,12 +70,10 @@
       align-content: center;
       display: flex;
     }
-
     button:hover {
       background: linear-gradient(90deg, #0099cc, #00aaff);
       box-shadow: 0 6px 20px rgba(0, 170, 255, 0.9);
     }
-
     .inputps {
       display: block;
       margin-bottom: 15px;
@@ -94,34 +86,89 @@
       box-shadow: 0 0 15px #288cb2;
       text-align: center;
     }
-
     @media (max-width: 360px) {
-      h2#recipient { font-size: 1em; margin-top: 20px; }
-      form { padding: 12px; width: 100%; }
-      textarea, .inputps { font-size: 14px; padding: 8px; border-radius: 8px; }
-      button { font-size: 14px; padding: 10px 16px; border-radius: 8px; }
+      h2#recipient {
+        font-size: 1em;
+        margin-top: 20px;
+      }
+      form {
+        padding: 12px;
+        width: 100%;
+      }
+      textarea,
+      .inputps {
+        font-size: 14px;
+        padding: 8px;
+        border-radius: 8px;
+      }
+      button {
+        font-size: 14px;
+        padding: 10px 16px;
+        border-radius: 8px;
+      }
     }
-
     @media (min-width: 361px) and (max-width: 600px) {
-      body { padding: 0 2vw; }
-      h2#recipient { font-size: 1.2em; margin-top: 24px; }
-      form { padding: 16px 6vw; width: 100%; max-width: 100%; border-radius: 12px; }
-      textarea, .inputps { font-size: 15px; padding: 10px; border-radius: 10px; }
-      button { padding: 11px 18px; font-size: 15px; border-radius: 10px; }
+      body {
+        padding: 0 2vw;
+      }
+      h2#recipient {
+        font-size: 1.2em;
+        margin-top: 24px;
+      }
+      form {
+        padding: 16px 6vw;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 12px;
+      }
+      textarea,
+      .inputps {
+        font-size: 15px;
+        padding: 10px;
+        border-radius: 10px;
+      }
+      button {
+        padding: 11px 18px;
+        font-size: 15px;
+        border-radius: 10px;
+      }
     }
-
     @media (min-width: 601px) and (max-width: 900px) {
-      body { padding: 0 5vw; }
-      form { width: 90%; max-width: 600px; padding: 20px; }
-      textarea, .inputps { font-size: 16px; padding: 12px; }
-      button { padding: 13px 24px; font-size: 16px; }
+      body {
+        padding: 0 5vw;
+      }
+      form {
+        width: 90%;
+        max-width: 600px;
+        padding: 20px;
+      }
+      textarea,
+      .inputps {
+        font-size: 16px;
+        padding: 12px;
+      }
+      button {
+        padding: 13px 24px;
+        font-size: 16px;
+      }
     }
-
     @media (min-width: 901px) {
-      body { padding: 0; }
-      form { width: 80%; max-width: 500px; padding: 25px 30px; }
-      textarea, .inputps { font-size: 17px; }
-      button { padding: 14px 30px; font-size: 16px; }
+      body {
+        padding: 0;
+      }
+      form {
+        width: 80%;
+        max-width: 500px;
+        padding: 25px 30px;
+      }
+      textarea,
+      .inputps {
+        font-size: 17px;
+      }
+      button {
+        padding: 14px 30px;
+        font-size: 16px;
+      }
     }
   </style>
 </head>
@@ -135,7 +182,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBqk3L_qkolD41H3yvHEzz4O-Sr15I-Tko",
@@ -170,7 +217,7 @@
         await addDoc(collection(db, "messages"), {
           to: toPseudo,
           message: msg,
-          createdAt: new Date()
+          createdAt: serverTimestamp()
         });
 
         alert("Message envoyé avec succès !");
@@ -184,9 +231,9 @@
   <script>
     window.onload = function () {
       const params = new URLSearchParams(window.location.search);
-      const pseudo = params.get('to');
+      const pseudo = params.get("to");
       if (pseudo) {
-        const input = document.getElementById('receiver');
+        const input = document.getElementById("receiver");
         input.value = decodeURIComponent(pseudo);
         input.focus();
       }
@@ -199,4 +246,4 @@
     };
   </script>
 </body>
-</html>
+  </html>

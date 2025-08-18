@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>SIS send a message </title>
-  <!-- Responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -134,10 +133,82 @@
       button { padding: 14px 30px; font-size: 16px; }
       #notif {font-size: 16px;}
     }
+    /* Style du menu hamburger */
+    .menu-container {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    .menu-toggle {
+      display: block;
+      width: 40px;
+      height: 40px;
+      background: #00aaff;
+      border-radius: 50%;
+      position: relative;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    .menu-toggle .bar {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: #fff;
+      position: absolute;
+      left: 7.5px;
+      transition: all 0.3s ease;
+    }
+    .menu-toggle .bar:nth-child(1) { top: 11px; }
+    .menu-toggle .bar:nth-child(2) { top: 18.5px; }
+    .menu-toggle .bar:nth-child(3) { top: 26px; }
+
+    .menu-toggle.active .bar:nth-child(1) {
+      transform: translateY(7.5px) rotate(45deg);
+    }
+    .menu-toggle.active .bar:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-toggle.active .bar:nth-child(3) {
+      transform: translateY(-7.5px) rotate(-45deg);
+    }
+
+    .menu-links {
+      position: absolute;
+      top: 50px;
+      right: 0;
+      width: 180px;
+      background: #fff;
+      border-radius: 10px;
+      list-style: none;
+      padding: 10px 0;
+      margin: 0;
+      box-shadow: 0 4px 15px rgba(0, 153, 204, 0.3);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .menu-links.active {
+      transform: scaleY(1);
+    }
+
+    .menu-links li a {
+      display: block;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: #004d99;
+      font-size: 16px;
+      transition: background-color 0.2s;
+    }
+
+    .menu-links li a:hover {
+      background-color: #e7faff;
+    }
   </style>
 </head>
 <body>
-  <h2 id="recipient">Envoyez votre message 📨</h2>
+  <h3 id="recipient">Envoyez votre message </h3>
   <form id="messageForm">
     <input type="password" class="inputps" id="receiver" placeholder="Pseudo du destinataire" readonly />
     <textarea id="messageInput" placeholder="Écris ton message ici..." required></textarea>
@@ -146,7 +217,6 @@
   <div id="notif"></div>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6580476075080041"
      crossorigin="anonymous"></script>
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-97TCHJ33KW"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -163,7 +233,6 @@
     site_name: 'send-anonymous-messages'
   });
 </script>
-  <!-- Firebase & Form JS -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
@@ -236,31 +305,60 @@
       });
     };
   </script>
-<script>
-  // Désactive le clic droit
-  document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-    alert("Fonction désactivée retournes d'où tu viens 🚫");
-  });
+  <script>
+    // Désactive le clic droit
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      alert("Fonction désactivée retournes d'où tu viens 🚫");
+    });
 
-  // Désactive F12, Ctrl+U, Ctrl+Shift+I/J/C, Ctrl+S
-  document.addEventListener('keydown', function(e) {
-    // F12
-    if (e.key === "F12") {
-      e.preventDefault();
-      alert("Action interdite 🚫");
-    }
-    // Ctrl+U, Ctrl+S
-    if (e.ctrlKey && (e.key.toLowerCase() === 'u' || e.key.toLowerCase() === 's')) {
-      e.preventDefault();
-      alert("Action interdite 🚫");
-    }
-    // Ctrl+Shift+I/J/C
-    if (e.ctrlKey && e.shiftKey && ['i', 'j', 'c'].includes(e.key.toLowerCase())) {
-      e.preventDefault();
-      alert("Action interdite 🚫");
-    }
-  });
-</script>
+    // Désactive F12, Ctrl+U, Ctrl+Shift+I/J/C, Ctrl+S
+    document.addEventListener('keydown', function(e) {
+      // F12
+      if (e.key === "F12") {
+        e.preventDefault();
+        alert("Action interdite 🚫");
+      }
+      // Ctrl+U, Ctrl+S
+      if (e.ctrlKey && (e.key.toLowerCase() === 'u' || e.key.toLowerCase() === 's')) {
+        e.preventDefault();
+        alert("Action interdite 🚫");
+      }
+      // Ctrl+Shift+I/J/C
+      if (e.ctrlKey && e.shiftKey && ['i', 'j', 'c'].includes(e.key.toLowerCase())) {
+        e.preventDefault();
+        alert("Action interdite 🚫");
+      }
+    });
+  </script>
+
+  <div class="menu-container">
+    <button class="menu-toggle" aria-expanded="false" aria-controls="menu-links">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <ul class="menu-links" id="menu-links">
+      <li><a href="https://google.com" target="_blank">Créé son propre lien SIS</a></li>
+      <li><a href="https://github.com" target="_blank">Voir mes messages</a></li>
+  <li><a href="https://github.com" target="_blank">Politiques de confidentialité SIS</a></li>
+  <li><a href="https://github.com" target="_blank">Politiques de confidentialité SIS</a></li>
+  <li><a href="https://github.com" target="_blank">Politiques de confidentialité SIS</a></li>
+    </ul>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const menuToggle = document.querySelector('.menu-toggle');
+      const menuLinks = document.querySelector('.menu-links');
+
+      menuToggle.addEventListener('click', () => {
+        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', !isExpanded);
+        menuToggle.classList.toggle('active');
+        menuLinks.classList.toggle('active');
+      });
+    });
+  </script>
 </body>
 </html>

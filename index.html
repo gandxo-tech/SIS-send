@@ -2,213 +2,646 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>SIS envoyer un message</title>
+  <title>Envoyer un message anonyme — SIS Say-It-Safely</title>
+  <meta name="description" content="Envoyez facilement des messages anonymes à vos amis, followers ou proches via SIS Say-It-Safely, votre plateforme sécurisée et confidentielle.">
+  <meta name="keywords" content="envoyer message anonyme, chat anonyme, messages privés, sécurisé, confidentialité, SIS, Say-It-Safely">
+  <link rel="canonical" href="https://sis-say-it-safely-pi.vercel.app/envoyer.html">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      background-color: #b6e5f7;
-      color: #004d99;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      padding: 0;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+    :root {
+      --primary: #0ea5e9;
+      --secondary: #0284c7;
+      --accent: #38bdf8;
+      --dark: #0c4a6e;
+      --light-blue: #7dd3fc;
+      --sky: #bae6fd;
+      --glass: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.18);
+      --success: #22d3ee;
+      --warning: #06b6d4;
+    }
+
+    * {
       margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0c4a6e 100%);
+      color: #fff;
       min-height: 100vh;
-    }
-    h3#recipient {
-      margin: 2rem 0 0.5rem; /* Espacement harmonisé */
-      color: #0099cc;
-      text-shadow: 0 0 5px #00ccff88, 0 0 10px #00ccff55;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      font-size: 1.5rem; /* Taille ajustée */
-    }
-    .desc {
-      text-align: center;
-      max-width: 500px;
-      margin: 0 0 1rem; /* Espacement simplifié */
-      color: #007799;
-      font-size: 1rem;
-      line-height: 1.4; /* Meilleure lisibilité */
-    }
-    form {
-      background: #ccefff;
-      padding: 1.5rem; /* Padding réduit */
-      border-radius: 16px;
-      box-shadow: 0 4px 15px rgba(0, 153, 204, 0.3);
-      margin: 1rem 0; /* Espacement extérieur unifié */
-      width: 90vw;
-      max-width: 500px;
-      transition: box-shadow 0.3s ease;
       display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    textarea {
-      width: 100%;
-      padding: 0.75rem; /* Padding réduit */
-      border: 2px solid #00bfff;
-      border-radius: 12px;
-      background: #f0fcff;
-      color: #004d99;
-      font-size: 1rem;
-      resize: vertical;
-      min-height: 6rem; /* Hauteur en rem */
-      box-sizing: border-box;
-    }
-    textarea:focus {
-      outline: none;
-      border-color: #0099cc;
-      box-shadow: 0 0 8px #00ccffaa;
-    }
-    .inputps {
-      display: block;
-      font-size: 1rem; /* Taille harmonisée */
-      border-radius: 35px;
-      height: 2rem; /* Hauteur en rem */
-      box-shadow: 0 0 15px #288cb2;
-      text-align: center;
-      width: 100%;
-      border: 1px solid #00bfff;
-      background: #fff;
-      color: #004d99;
-      padding: 0.5rem 0;
-      box-sizing: border-box;
-    }
-    .inputps[readonly] {
-      background: #f8fafd;
-      pointer-events: none;
-      user-select: none;
-    }
-    button {
-      padding: 0.75rem 1.5rem; /* Padding réduit */
-      background: linear-gradient(90deg, #00bfff, #00ccff);
-      border: none;
-      border-radius: 12px;
-      color: #fff;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 204, 255, 0.7);
-      transition: all 0.3s ease;
-    }
-    button:hover {
-      background: linear-gradient(90deg, #0099cc, #00aaff);
-      box-shadow: 0 6px 20px rgba(0, 170, 255, 0.9);
-      transform: translateY(-2px); /* Effet de survol */
-    }
-    #voiceBtn {
-      background: #fff;
-      border: 2px solid #00bfff;
-      color: #004d99;
-      box-shadow: 0 4px 12px rgba(0, 204, 255, 0.3);
-    }
-    #voiceBtn:hover {
-      background: #f0fcff;
-      border-color: #0099cc;
-      box-shadow: 0 6px 20px rgba(0, 170, 255, 0.5);
-      transform: translateY(-2px);
-    }
-    #voiceBtn.recording {
-      background: #0099cc;
-      border: none;
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(0, 153, 204, 0.7);
-    }
-    #voiceBtn.recording:hover {
-      background: #007799;
-      box-shadow: 0 6px 20px rgba(0, 153, 204, 0.9);
-      transform: translateY(-2px);
-    }
-    #langSelect-wrapper {
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
       position: relative;
-      width: 100%;
+      overflow-x: hidden;
     }
-    #langSelect {
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      padding: 0.75rem 2rem 0.75rem 0.75rem;
-      border: 2px solid #00bfff;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(56, 189, 248, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.15) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .floating-shapes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .shape {
+      position: absolute;
+      opacity: 0.08;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .shape:nth-child(1) {
+      width: 80px;
+      height: 80px;
+      background: var(--accent);
+      border-radius: 50%;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape:nth-child(2) {
+      width: 60px;
+      height: 60px;
+      background: var(--light-blue);
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      top: 60%;
+      right: 10%;
+      animation-delay: 2s;
+    }
+
+    .shape:nth-child(3) {
+      width: 100px;
+      height: 100px;
+      background: var(--sky);
+      border-radius: 50%;
+      bottom: 10%;
+      left: 50%;
+      animation-delay: 4s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-30px) rotate(180deg); }
+    }
+
+    .sis-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 30px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 100;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .sis-logo {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--accent), var(--primary));
       border-radius: 12px;
-      background: #fff;
-      color: #004d99;
-      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 800;
+      box-shadow: 0 8px 32px rgba(14, 165, 233, 0.3);
+      animation: logoGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes logoGlow {
+      0%, 100% { box-shadow: 0 8px 32px rgba(14, 165, 233, 0.4); }
+      50% { box-shadow: 0 8px 48px rgba(56, 189, 248, 0.6); }
+    }
+
+    .sis-title {
+      font-size: 20px;
       font-weight: 700;
-      cursor: pointer;
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      box-shadow: 0 4px 12px rgba(0, 204, 255, 0.3);
+      letter-spacing: -0.5px;
+    }
+
+    .sis-subtitle {
+      font-size: 12px;
+      opacity: 0.8;
+      font-weight: 400;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 480px;
+      margin-top: 80px;
+    }
+
+    .card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .avatar {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--dark), #075985);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .profile-info h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .profile-info p {
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(34, 211, 238, 0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.8); }
+    }
+
+    .prompt-section {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(14, 165, 233, 0.15));
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .prompt-section h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .prompt-section p {
+      font-size: 14px;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .feature-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--glass);
+      padding: 12px 20px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      border: 1px solid var(--glass-border);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .dice-icon {
+      font-size: 20px;
+      animation: rotate 4s infinite ease-in-out;
+    }
+
+    @keyframes rotate {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(180deg); }
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      color: #fff;
+      font-size: 15px;
+      font-family: inherit;
       transition: all 0.3s ease;
     }
-    #langSelect-wrapper::after {
-      content: "▼";
+
+    .input-field:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+    }
+
+    .input-field::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .input-field[readonly] {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    textarea.input-field {
+      min-height: 140px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper::after {
+      content: '▼';
       position: absolute;
-      right: 0.75rem;
+      right: 20px;
       top: 50%;
       transform: translateY(-50%);
-      color: #004d99;
-      font-size: 0.8rem;
       pointer-events: none;
+      font-size: 12px;
+      opacity: 0.6;
     }
-    #langSelect:hover {
-      background: #f0fcff;
-      border-color: #0099cc;
-      box-shadow: 0 6px 20px rgba(0, 170, 255, 0.5);
+
+    select.input-field {
+      appearance: none;
+      cursor: pointer;
+      padding-right: 50px;
     }
-    #langSelect:focus {
-      outline: none;
-      border-color: #0099cc;
-      box-shadow: 0 0 12px #00ccffaa;
+
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 24px;
     }
-    .button-group {
+
+    .btn {
+      padding: 16px 24px;
+      border: none;
+      border-radius: 16px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
       display: flex;
-      gap: 1rem;
+      align-items: center;
       justify-content: center;
-      width: 100%;
+      gap: 8px;
     }
-    #notif {
+
+    .btn-secondary {
+      background: var(--glass);
+      color: #fff;
+      border: 1px solid var(--glass-border);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary.recording {
+      background: linear-gradient(135deg, #dc2626, #991b1b);
+      border: none;
+      animation: recordPulse 1s infinite;
+    }
+
+    @keyframes recordPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+      50% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      color: #fff;
+      grid-column: 1 / -1;
+      font-size: 16px;
+      padding: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      box-shadow: 0 12px 32px rgba(14, 165, 233, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .notification {
       display: none;
-      margin: 1rem 0; /* Espacement en rem */
-      background: #e7faff;
-      color: #007799;
-      border: 1.5px solid #00bfff;
-      border-radius: 10px;
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
+      background: linear-gradient(135deg, var(--success), #0891b2);
+      padding: 20px;
+      border-radius: 16px;
+      margin-top: 20px;
       text-align: center;
-      max-width: 500px;
-      box-shadow: 0 2px 10px #00ccff44;
+      animation: slideDown 0.4s ease-out;
+      box-shadow: 0 8px 24px rgba(34, 211, 238, 0.3);
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .notification a {
+      color: #fff;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    .stats-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 24px 0;
+      padding: 16px;
+      background: var(--glass);
+      border-radius: 16px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .stats-number {
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--light-blue), var(--sky));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cta-button {
+      display: block;
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, var(--dark), #075985);
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      border-radius: 16px;
+      font-weight: 600;
+      font-size: 15px;
+      margin-top: 16px;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(12, 74, 110, 0.3);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(12, 74, 110, 0.4);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--glass-border);
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    .footer a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .sis-header {
+        padding: 16px 20px;
+      }
+
+      .sis-logo {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
+
+      .sis-title {
+        font-size: 16px;
+      }
+
+      .container {
+        margin-top: 70px;
+      }
+
+      .card {
+        padding: 24px;
+      }
+
+      .button-row {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <h3 id="recipient">Envoyez votre message</h3>
-  <p class="desc">
-    Utilisez ce formulaire pour envoyer un message totalement anonyme à votre ami(e).
-    Personne ne saura que c’est vous ! Entrez votre message ci-dessous et cliquez sur "Envoyer".
-  </p>
+  <div class="floating-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
 
-  <form id="messageForm" autocomplete="off">
-    <input type="password" class="inputps" id="receiver" placeholder="Pseudo du destinataire" readonly />
-    <textarea id="messageInput" placeholder="Écris ton message ici..." required></textarea>
-    <div id="langSelect-wrapper">
-      <select id="langSelect">
-        <option value="fr-FR">Français</option>
-        <option value="en-US">Anglais</option>
-        <option value="es-ES">Espagnol</option>
-        <option value="de-DE">Allemand</option>
-      </select>
+  <header class="sis-header">
+    <div class="sis-logo">🛡️</div>
+    <div>
+      <div class="sis-title">SIS Say-It-Safely</div>
+      <div class="sis-subtitle">Messages 100% anonymes</div>
     </div>
-    <div class="button-group">
-      <button type="button" id="voiceBtn">🎤 Dicter un message</button>
-      <button type="button" id="sendBtn">Envoyer</button>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <div class="profile-section">
+        <div class="avatar">@OA</div>
+        <div class="profile-info">
+          <h2>@OA</h2>
+          <p>Accepte les messages anonymes</p>
+          <div class="status-badge">
+            <span class="status-dot"></span>
+            En ligne
+          </div>
+        </div>
+      </div>
+
+      <div class="prompt-section">
+        <h3>💬 Envoie un message anonyme</h3>
+        <p>Pose une question, partage un secret ou dis simplement bonjour. Ton identité reste 100% confidentielle.</p>
+      </div>
+
+
+
+      <form id="messageForm" autocomplete="off">
+        <div class="form-group">
+          <label class="form-label">Destinataire</label>
+          <input type="text" class="input-field" id="receiver" placeholder="@username" readonly />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Ton message anonyme</label>
+          <textarea id="messageInput" class="input-field" placeholder="Écris ton message ici... Personne ne saura que c'est toi 🤫" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Langue de dictée</label>
+          <div class="select-wrapper">
+            <select id="langSelect" class="input-field">
+              <option value="fr-FR">🇫🇷 Français</option>
+              <option value="en-US">🇺🇸 Anglais</option>
+              <option value="es-ES">🇪🇸 Espagnol</option>
+              <option value="de-DE">🇩🇪 Allemand</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button type="button" id="voiceBtn" class="btn btn-secondary">
+            🎤 Dicter
+          </button>
+          <button type="submit" class="btn btn-primary">
+            📤 Envoyer
+          </button>
+        </div>
+      </form>
+
+      <div id="notif" class="notification"></div>
     </div>
-  </form>
 
-  <div id="notif"></div>
+    <div class="stats-section">
+      ✨ <span class="stats-number">254</span> messages envoyés aujourd'hui
+    </div>
 
-  <!-- Firebase JS -->
+    <a href="https://sis-say-it-safely.vercel.app/" class="cta-button">
+      🎁 Crée ton propre lien SIS
+    </a>
+
+    <div class="footer">
+      <a href="#">Conditions</a> • <a href="#">Confidentialité</a>
+    </div>
+  </div>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
@@ -222,62 +655,97 @@
       appId: "1:836606625364:web:7150571998131c41c0cfc1",
       measurementId: "G-97TCHJ33KW"
     };
+
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Récupérer pseudo depuis URL
     const urlParams = new URLSearchParams(window.location.search);
     const toPseudo = urlParams.get("to");
     const receiverInput = document.getElementById("receiver");
-    if (toPseudo) receiverInput.value = decodeURIComponent(toPseudo);
+    if (toPseudo) {
+      receiverInput.value = "@" + decodeURIComponent(toPseudo);
+    }
 
-    document.getElementById("sendBtn").addEventListener("click", async () => {
+    document.getElementById("messageForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
       const msg = document.getElementById("messageInput").value.trim();
-      if (!msg) { alert("Entre un message avant d'envoyer !"); return; }
-      if (!toPseudo) { alert("Pseudo destinataire introuvable 😔!"); return; }
+      const sendBtn = document.querySelector('.btn-primary');
+
+      if (!msg) {
+        alert("📝 Entre un message avant d'envoyer !");
+        return;
+      }
+      if (!toPseudo) {
+        alert("😔 Pseudo destinataire introuvable !");
+        return;
+      }
+
+      sendBtn.disabled = true;
+      sendBtn.textContent = "⏳ Envoi...";
+
       try {
         await addDoc(collection(db, "messages"), {
           to: toPseudo,
           message: msg,
           createdAt: serverTimestamp()
         });
+
         document.getElementById("messageInput").value = "";
         const notif = document.getElementById("notif");
-        notif.innerHTML = `Votre message a été envoyé avec succès !<br>
-        <a href="https://sis-say-it-safely.vercel.app/" target="_blank" style="color:#0099cc;text-decoration:underline;font-weight:bold;">Crée ton propre lien ici</a>`;
+        notif.innerHTML = `✅ Message envoyé avec succès !<br><br>
+        <a href="https://sis-say-it-safely.vercel.app/" target="_blank">Crée ton propre lien SIS →</a>`;
         notif.style.display = "block";
-        setTimeout(() => { notif.style.display = "none"; }, 8000);
+
+        setTimeout(() => {
+          notif.style.display = "none";
+        }, 8000);
       } catch (error) {
-        alert("Erreur lors de l'envoi : " + error.message);
+        alert("❌ Erreur lors de l'envoi : " + error.message);
+      } finally {
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = "📤 Envoyer";
       }
     });
   </script>
 
-  <!-- Partie dictée -->
   <script>
     const voiceBtn = document.getElementById("voiceBtn");
     const messageInput = document.getElementById("messageInput");
     const langSelect = document.getElementById("langSelect");
-    let recognition;
-    let silenceTimer;
+    let recognition = null;
+    let silenceTimer = null;
 
-    if ('webkitSpeechRecognition' in window) {
-      recognition = new webkitSpeechRecognition();
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
       recognition.interimResults = false;
       recognition.continuous = true;
 
       function startRecognition() {
-        recognition.lang = langSelect.value; // Utilise la langue sélectionnée
-        recognition.start();
-        voiceBtn.classList.add("recording");
-        voiceBtn.textContent = "⏳ Écoute en cours...";
+        try {
+          recognition.lang = langSelect.value;
+          recognition.start();
+          voiceBtn.classList.add("recording");
+          voiceBtn.innerHTML = "🔴 Arrêter";
+        } catch (error) {
+          console.error("Erreur démarrage reconnaissance:", error);
+        }
       }
 
       function stopRecognition() {
-        recognition.stop();
-        clearTimeout(silenceTimer);
-        voiceBtn.classList.remove("recording");
-        voiceBtn.textContent = "🎤 Dicter un message";
+        try {
+          if (recognition) {
+            recognition.stop();
+          }
+          if (silenceTimer) {
+            clearTimeout(silenceTimer);
+            silenceTimer = null;
+          }
+          voiceBtn.classList.remove("recording");
+          voiceBtn.innerHTML = "🎤 Dicter";
+        } catch (error) {
+          console.error("Erreur arrêt reconnaissance:", error);
+        }
       }
 
       voiceBtn.addEventListener("click", () => {
@@ -291,24 +759,25 @@
       recognition.onresult = (event) => {
         const transcript = event.results[event.results.length - 1][0].transcript;
         messageInput.value += (messageInput.value ? " " : "") + transcript;
-        clearTimeout(silenceTimer);
-        silenceTimer = setTimeout(() => recognition.stop(), 3000);
-      };
 
-      recognition.onerror = () => {
-        alert("Erreur de reconnaissance vocale !");
-        stopRecognition();
-      };
-
-      recognition.onend = () => {
-        clearTimeout(silenceTimer);
-        voiceBtn.classList.remove("recording");
-        voiceBtn.textContent = "🎤 Dicter un message";
-      };
-    } else {
-      voiceBtn.disabled = true;
-      voiceBtn.textContent = "Micro non supporté";
+        if (silenceTimer) {
+          clearTimeout(silenceTimer);
+        }
+        silenceTimer = setTimeout(() => {
+          stopRecognition
+try {
+    if (recognition) {
+      recognition.stop();
     }
-  </script>
-</body>
-</html>
+    if (silenceTimer) {
+      clearTimeout(silenceTimer);
+      silenceTimer = null;
+    }
+    voiceBtn.classList.remove("recording");
+    voiceBtn.innerHTML = "🎤 Dicter";
+  } catch (error) {
+    console.error("Erreur arrêt reconnaissance:", error);
+  }
+}
+
+voiceBtn.addEventLis

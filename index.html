@@ -780,4 +780,48 @@ try {
   }
 }
 
-voiceBtn.addEventLis
+voiceBtn.addEventListener("click", () => {
+  if (voiceBtn.classList.contains("recording")) {
+    stopRecognition();
+  } else {
+    startRecognition();
+  }
+});
+
+recognition.onresult = (event) => {
+  const transcript = event.results[event.results.length - 1][0].transcript;
+  messageInput.value += (messageInput.value ? " " : "") + transcript;
+
+  if (silenceTimer) {
+    clearTimeout(silenceTimer);
+  }
+  silenceTimer = setTimeout(() => {
+    stopRecognition();
+  }, 3000);
+};
+
+recognition.onerror = (event) => {
+  console.error("Erreur de reconnaissance vocale:", event.error);
+  if (event.error !== 'no-speech' && event.error !== 'aborted') {
+    alert("❌ Erreur de reconnaissance vocale. Veuillez réessayer.");
+  }
+  stopRecognition();
+};
+
+recognition.onend = () => {
+  if (silenceTimer) {
+    clearTimeout(silenceTimer);
+    silenceTimer = null;
+  }
+  voiceBtn.classList.remove("recording");
+  voiceBtn.innerHTML = "🎤 Dicter";
+};
+} else {
+voiceBtn.disabled = true;
+voiceBtn.innerHTML = "❌ Non supporté";
+voiceBtn.style.opacity = "0.5";
+voiceBtn.style.cursor = "not-allowed";
+}
+</script>
+</body>
+</html>

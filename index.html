@@ -775,4 +775,21 @@
         stopRecognition();
       };
 
+      recognition.onend = () => {
+        if (silenceTimer) {
+          clearTimeout(silenceTimer);
+          silenceTimer = null;
+        }
+        voiceBtn.classList.remove("recording");
+        voiceBtn.innerHTML = "🎤 Dicter";
+      };
+    } else {
+      voiceBtn.disabled = true;
+      voiceBtn.innerHTML = "❌ Non supporté";
+      voiceBtn.style.opacity = "0.5";
+      voiceBtn.style.cursor = "not-allowed";
+    }
+  </script>
+</body>
+</html>
   

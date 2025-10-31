@@ -187,26 +187,20 @@
       border-bottom: 1px solid var(--glass-border);
     }
 
-    .avatar {
+    .avatar-container {
       width: 64px;
       height: 64px;
       border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      position: relative;
+      background: linear-gradient(135deg, var(--dark), #075985);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      font-weight: 700;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-      position: relative;
-      overflow: hidden;
-      object-fit: cover;
     }
 
-    .avatar.loading {
-      background: linear-gradient(135deg, var(--dark), #075985);
-    }
-
-    .avatar::before {
+    .avatar-container::before {
       content: '';
       position: absolute;
       top: -50%;
@@ -220,6 +214,22 @@
     @keyframes shimmer {
       0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
       100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: relative;
+      z-index: 1;
+    }
+
+    .avatar-placeholder {
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+      position: relative;
+      z-index: 1;
     }
 
     .profile-info h2 {
@@ -500,7 +510,10 @@
   <div class="container">
     <div class="card">
       <div class="profile-section">
-        <img class="avatar loading" id="userAvatar" alt="Avatar">
+        <div class="avatar-container" id="avatarContainer">
+          <img class="avatar" id="userAvatar" alt="Avatar" style="display: none;">
+          <div class="avatar-placeholder" id="avatarPlaceholder">👤</div>
+        </div>
         <div class="profile-info">
           <h2 id="userName">Chargement...</h2>
           <p>Accepte les messages anonymes</p>
@@ -573,18 +586,48 @@
     const toPseudo = urlParams.get("to");
     const receiverInput = document.getElementById("receiver");
     const userAvatar = document.getElementById("userAvatar");
+    const avatarPlaceholder = document.getElementById("avatarPlaceholder");
     const userName = document.getElementById("userName");
+
+    // Fonction pour afficher l'avatar
+    function displayAvatar(avatarUrl) {
+      if (avatarUrl && avatarUrl.trim() !== '') {
+        userAvatar.src = avatarUrl;
+        userAvatar.style.display = 'block';
+        avatarPlaceholder.style.display = 'none';
+        
+        // Gestion d'erreur de chargement
+        userAvatar.onerror = () => {
+          console.error("Erreur chargement avatar");
+          userAvatar.style.display = 'none';
+          avatarPlaceholder.style.display = 'flex';
+          avatarPlaceholder.textContent = toPseudo ? toPseudo.charAt(0).toUpperCase() : '👤';
+        };
+        
+        userAvatar.onload = () => {
+          console.log("Avatar chargé avec succès");
+        };
+      } else {
+        userAvatar.style.display = 'none';
+        avatarPlaceholder.style.display = 'flex';
+        avatarPlaceholder.textContent = toPseudo ? toPseudo.charAt(0).toUpperCase() : '👤';
+      }
+    }
 
     // Charger les informations de l'utilisateur depuis Firebase
     if (toPseudo) {
       receiverInput.value = "@" + decodeURIComponent(toPseudo);
       userName.textContent = "@" + decodeURIComponent(toPseudo);
 
+      console.log("Recherche de l'utilisateur:", decodeURIComponent(toPseudo));
+
       // Chercher l'utilisateur dans la base de données
       const usersRef = dbRef(database, 'users');
       get(usersRef).then((snapshot) => {
         if (snapshot.exists()) {
           const users = snapshot.val();
+          console.log("Utilisateurs trouvés:", Object.keys(users).length);
+          
           // Trouver l'utilisateur avec le pseudo correspondant
           const userEntry = Object.entries(users).find(([uid, userData]) => 
             userData.pseudo === decodeURIComponent(toPseudo)
@@ -592,31 +635,37 @@
 
           if (userEntry) {
             const [uid, userData] = userEntry;
+            console.log("Utilisateur trouvé:", userData);
+            
             // Mettre à jour l'avatar
             if (userData.avatar) {
-              userAvatar.src = userData.avatar;
-              userAvatar.classList.remove('loading');
+              displayAvatar(userData.avatar);
             } else {
-              // Avatar par défaut si pas d'avatar
-              userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
-              userAvatar.classList.remove('loading');
+              // Avatar par défaut généré
+              const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
+              displayAvatar(defaultAvatar);
             }
           } else {
+            console.log("Utilisateur non trouvé, utilisation avatar par défaut");
             // Utilisateur non trouvé, utiliser avatar par défaut
-            userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
-            userAvatar.classList.remove('loading');
+            const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
+            displayAvatar(defaultAvatar);
           }
         } else {
+          console.log("Pas d'utilisateurs dans la base");
           // Pas d'utilisateurs, utiliser avatar par défaut
-          userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
-          userAvatar.classList.remove('loading');
+          const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
+          displayAvatar(defaultAvatar);
         }
       }).catch((error) => {
         console.error("Erreur chargement utilisateur:", error);
         // En cas d'erreur, utiliser avatar par défaut
-        userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
-        userAvatar.classList.remove('loading');
+        const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
+        displayAvatar(defaultAvatar);
       });
+    } else {
+      // Pas de pseudo dans l'URL
+      avatarPlaceholder.textContent = '👤';
     }
 
     document.getElementById("messageForm").addEventListener("submit", async (e) => {

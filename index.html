@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -189,7 +190,6 @@
     .avatar {
       width: 64px;
       height: 64px;
-      background: linear-gradient(135deg, var(--dark), #075985);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -199,6 +199,11 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       position: relative;
       overflow: hidden;
+      object-fit: cover;
+    }
+
+    .avatar.loading {
+      background: linear-gradient(135deg, var(--dark), #075985);
     }
 
     .avatar::before {
@@ -275,29 +280,6 @@
       opacity: 0.9;
     }
 
-    .feature-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--glass);
-      padding: 12px 20px;
-      border-radius: 16px;
-      margin-bottom: 24px;
-      border: 1px solid var(--glass-border);
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .dice-icon {
-      font-size: 20px;
-      animation: rotate 4s infinite ease-in-out;
-    }
-
-    @keyframes rotate {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(180deg); }
-    }
-
     .form-group {
       margin-bottom: 20px;
     }
@@ -346,30 +328,9 @@
       font-family: inherit;
     }
 
-    .select-wrapper {
-      position: relative;
-    }
-
-    .select-wrapper::after {
-      content: '▼';
-      position: absolute;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-      font-size: 12px;
-      opacity: 0.6;
-    }
-
-    select.input-field {
-      appearance: none;
-      cursor: pointer;
-      padding-right: 50px;
-    }
-
     .button-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 12px;
       margin-top: 24px;
     }
@@ -389,41 +350,9 @@
       gap: 8px;
     }
 
-    .btn-secondary {
-      background: var(--glass);
-      color: #fff;
-      border: 1px solid var(--glass-border);
-    }
-
-    .btn-secondary:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.15);
-      transform: translateY(-2px);
-    }
-
-    .btn-secondary:active:not(:disabled) {
-      transform: translateY(0);
-    }
-
-    .btn-secondary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .btn-secondary.recording {
-      background: linear-gradient(135deg, #dc2626, #991b1b);
-      border: none;
-      animation: recordPulse 1s infinite;
-    }
-
-    @keyframes recordPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
-      50% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
-    }
-
     .btn-primary {
       background: linear-gradient(135deg, var(--accent), var(--primary));
       color: #fff;
-      grid-column: 1 / -1;
       font-size: 16px;
       padding: 18px;
       text-transform: uppercase;
@@ -550,10 +479,6 @@
       .card {
         padding: 24px;
       }
-
-      .button-row {
-        grid-template-columns: 1fr;
-      }
     }
   </style>
 </head>
@@ -575,9 +500,9 @@
   <div class="container">
     <div class="card">
       <div class="profile-section">
-        <div class="avatar">user</div>
+        <img class="avatar loading" id="userAvatar" alt="Avatar">
         <div class="profile-info">
-          <h2>@user</h2>
+          <h2 id="userName">Chargement...</h2>
           <p>Accepte les messages anonymes</p>
           <div class="status-badge">
             <span class="status-dot"></span>
@@ -594,7 +519,7 @@
       <form id="messageForm" autocomplete="off">
         <div class="form-group">
           <label class="form-label">Destinataire</label>
-          <input type="password" class="input-field" id="receiver" placeholder="@username" readonly />
+          <input type="text" class="input-field" id="receiver" placeholder="@username" readonly />
         </div>
 
         <div class="form-group">
@@ -602,8 +527,7 @@
           <textarea id="messageInput" class="input-field" placeholder="Écris ton message ici... Personne ne saura que c'est toi 🤫" required></textarea>
         </div>
 
-       
-          <div class="button-row">
+        <div class="button-row">
           <button type="submit" class="btn btn-primary">
             📤 Envoyer
           </button>
@@ -627,8 +551,9 @@
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getDatabase, ref as dbRef, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBqk3L_qkolD41H3yvHEzz4O-Sr15I-Tko",
@@ -642,12 +567,56 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const database = getDatabase(app);
 
     const urlParams = new URLSearchParams(window.location.search);
     const toPseudo = urlParams.get("to");
     const receiverInput = document.getElementById("receiver");
+    const userAvatar = document.getElementById("userAvatar");
+    const userName = document.getElementById("userName");
+
+    // Charger les informations de l'utilisateur depuis Firebase
     if (toPseudo) {
       receiverInput.value = "@" + decodeURIComponent(toPseudo);
+      userName.textContent = "@" + decodeURIComponent(toPseudo);
+
+      // Chercher l'utilisateur dans la base de données
+      const usersRef = dbRef(database, 'users');
+      get(usersRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const users = snapshot.val();
+          // Trouver l'utilisateur avec le pseudo correspondant
+          const userEntry = Object.entries(users).find(([uid, userData]) => 
+            userData.pseudo === decodeURIComponent(toPseudo)
+          );
+
+          if (userEntry) {
+            const [uid, userData] = userEntry;
+            // Mettre à jour l'avatar
+            if (userData.avatar) {
+              userAvatar.src = userData.avatar;
+              userAvatar.classList.remove('loading');
+            } else {
+              // Avatar par défaut si pas d'avatar
+              userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
+              userAvatar.classList.remove('loading');
+            }
+          } else {
+            // Utilisateur non trouvé, utiliser avatar par défaut
+            userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
+            userAvatar.classList.remove('loading');
+          }
+        } else {
+          // Pas d'utilisateurs, utiliser avatar par défaut
+          userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
+          userAvatar.classList.remove('loading');
+        }
+      }).catch((error) => {
+        console.error("Erreur chargement utilisateur:", error);
+        // En cas d'erreur, utiliser avatar par défaut
+        userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
+        userAvatar.classList.remove('loading');
+      });
     }
 
     document.getElementById("messageForm").addEventListener("submit", async (e) => {
@@ -691,91 +660,5 @@
       }
     });
   </script>
-
-  <script>
-    const voiceBtn = document.getElementById("voiceBtn");
-    const messageInput = document.getElementById("messageInput");
-    const langSelect = document.getElementById("langSelect");
-    let recognition = null;
-    let silenceTimer = null;
-
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SpeechRecognition();
-      recognition.interimResults = false;
-      recognition.continuous = true;
-
-      function startRecognition() {
-        try {
-          recognition.lang = langSelect.value;
-          recognition.start();
-          voiceBtn.classList.add("recording");
-          voiceBtn.innerHTML = "🔴 Arrêter";
-        } catch (error) {
-          console.error("Erreur démarrage reconnaissance:", error);
-        }
-      }
-
-      function stopRecognition() {
-        try {
-          if (recognition) {
-            recognition.stop();
-          }
-          if (silenceTimer) {
-            clearTimeout(silenceTimer);
-            silenceTimer = null;
-          }
-          voiceBtn.classList.remove("recording");
-          voiceBtn.innerHTML = "🎤 Dicter";
-        } catch (error) {
-          console.error("Erreur arrêt reconnaissance:", error);
-        }
-      }
-
-      voiceBtn.addEventListener("click", () => {
-        if (voiceBtn.classList.contains("recording")) {
-          stopRecognition();
-        } else {
-          startRecognition();
-        }
-      });
-
-      recognition.onresult = (event) => {
-        const transcript = event.results[event.results.length - 1][0].transcript;
-        messageInput.value += (messageInput.value ? " " : "") + transcript;
-
-        if (silenceTimer) {
-          clearTimeout(silenceTimer);
-        }
-        silenceTimer = setTimeout(() => 
-{
-          stopRecognition();
-        }, 3000);
-      };
-
-      recognition.onerror = (event) => {
-        console.error("Erreur de reconnaissance vocale:", event.error);
-        if (event.error !== 'no-speech' && event.error !== 'aborted') {
-          alert("❌ Erreur de reconnaissance vocale. Veuillez réessayer.");
-        }
-        stopRecognition();
-      };
-
-      recognition.onend = () => {
-        if (silenceTimer) {
-          clearTimeout(silenceTimer);
-          silenceTimer = null;
-        }
-        voiceBtn.classList.remove("recording");
-        voiceBtn.innerHTML = "🎤 Dicter";
-      };
-    } else {
-      voiceBtn.disabled = true;
-      voiceBtn.innerHTML = "❌ Non supporté";
-      voiceBtn.style.opacity = "0.5";
-      voiceBtn.style.cursor = "not-allowed";
-    }
-  </script>
 </body>
 </html>
-  

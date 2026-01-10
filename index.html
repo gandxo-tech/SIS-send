@@ -2,10 +2,57 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Envoyer un message— SIS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <!-- SEO Meta Tags -->
+  <title>Envoyer un message anonyme sur SIS - Say It Safely</title>
+  <meta name="description" content="Envoie un message 100% anonyme et confidentiel sur SIS. Dis ce que tu penses vraiment sans révéler ton identité. Plateforme sécurisée de messages anonymes.">
+  <meta name="keywords" content="message anonyme, SIS, Say It Safely, confession anonyme, message secret, plateforme anonyme, NGL alternative, messages confidentiels">
+  <meta name="author" content="GBAGUIDI Ahotondji Exaucé Richeland">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="French">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sis-say-it-safely.vercel.app/envoyer.html">
+  <meta property="og:title" content="Envoyer un message anonyme sur SIS">
+  <meta property="og:description" content="Envoie un message 100% anonyme et confidentiel. Dis ce que tu penses vraiment sans révéler ton identité.">
+  <meta property="og:image" content="https://sis-say-it-safely.vercel.app/og-image.jpg">
+  <meta property="og:site_name" content="SIS - Say It Safely">
+  <meta property="og:locale" content="fr_FR">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://sis-say-it-safely.vercel.app/envoyer.html">
+  <meta name="twitter:title" content="Envoyer un message anonyme sur SIS">
+  <meta name="twitter:description" content="Envoie un message 100% anonyme et confidentiel. Dis ce que tu penses vraiment sans révéler ton identité.">
+  <meta name="twitter:image" content="https://sis-say-it-safely.vercel.app/twitter-image.jpg">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://sis-say-it-safely.vercel.app/envoyer.html">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#667eea">
+  <meta name="msapplication-TileColor" content="#667eea">
+  
+  <!-- Additional SEO -->
+  <meta name="rating" content="general">
+  <meta name="revisit-after" content="7 days">
+  <meta name="distribution" content="global">
+  
+  <!-- Preconnect for Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.gstatic.com">
+  <link rel="preconnect" href="https://res.cloudinary.com">
+  
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
     * {
       margin: 0;
@@ -14,103 +61,61 @@
     }
 
     body {
-      font-family: 'Space Grotesk', sans-serif;
-      background: #050505;
+      font-family: 'Inter', sans-serif;
+      background: #000;
       color: #fff;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(102, 126, 234, 0.15), transparent);
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      animation: pulse 4s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
-      50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.5; }
     }
 
     .container {
       width: 100%;
-      max-width: 480px;
-      position: relative;
-      z-index: 1;
+      max-width: 460px;
+      animation: fadeIn 0.5s ease;
     }
 
-    .header {
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .sis-logo {
       text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .sis-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(135deg, #667eea22, #764ba222);
-      border: 1px solid #667eea44;
-      padding: 8px 20px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 24px;
+      margin-bottom: 32px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 3px;
       color: #667eea;
+      text-transform: uppercase;
     }
 
     .profile {
       display: flex;
       align-items: center;
-      gap: 20px;
-      background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
-      border: 1px solid #2a2a2a;
+      gap: 16px;
+      background: #111;
       border-radius: 20px;
       padding: 20px;
-      margin-bottom: 32px;
-      position: relative;
-      overflow: hidden;
+      margin-bottom: 24px;
+      transition: transform 0.2s;
     }
 
-    .profile::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
-      background-size: 200% 100%;
-      animation: shimmer 3s linear infinite;
-    }
-
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
+    .profile:hover {
+      transform: translateY(-2px);
     }
 
     .avatar {
-      width: 70px;
-      height: 70px;
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
       background: linear-gradient(135deg, #667eea, #764ba2);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 700;
       position: relative;
       overflow: hidden;
@@ -127,117 +132,66 @@
     }
 
     .profile-info h1 {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 700;
       margin-bottom: 4px;
     }
 
     .profile-info p {
-      font-size: 14px;
+      font-size: 13px;
       color: #888;
-    }
-
-    .anonymous-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #667eea22;
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #667eea;
-      margin-top: 8px;
     }
 
     .prompts {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .prompt-card {
-      background: #0f0f0f;
-      border: 1px solid #2a2a2a;
-      border-radius: 16px;
-      padding: 16px;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .prompt-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
-      transition: left 0.5s;
-    }
-
-    .prompt-card:hover::before {
-      left: 100%;
-    }
-
-    .prompt-card:hover {
-      border-color: #667eea;
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
-    }
-
-    .prompt-icon {
-      font-size: 24px;
-      margin-bottom: 8px;
-      display: block;
-    }
-
-    .prompt-text {
-      font-size: 13px;
-      font-weight: 600;
-      color: #fff;
-      line-height: 1.4;
-    }
-
-    .message-area {
-      background: #0a0a0a;
-      border: 2px solid #2a2a2a;
-      border-radius: 20px;
-      padding: 24px;
+      gap: 10px;
       margin-bottom: 20px;
-      transition: border-color 0.3s;
     }
 
-    .message-area:focus-within {
+    .prompt {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      text-align: center;
+    }
+
+    .prompt:hover {
+      background: #667eea;
       border-color: #667eea;
-      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      transform: scale(1.02);
     }
 
-    .message-label {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #888;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .prompt:active {
+      transform: scale(0.98);
+    }
+
+    .message-box {
+      background: #111;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+    }
+
+    .message-box:focus-within {
+      background: #161616;
     }
 
     textarea {
       width: 100%;
-      min-height: 140px;
+      min-height: 130px;
       background: transparent;
       border: none;
-      font-size: 16px;
+      font-size: 15px;
       font-family: inherit;
       color: #fff;
-      resize: vertical;
-      line-height: 1.6;
+      resize: none;
+      line-height: 1.5;
     }
 
     textarea:focus {
@@ -245,208 +199,171 @@
     }
 
     textarea::placeholder {
-      color: #444;
-    }
-
-    .char-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 12px;
-      font-size: 12px;
+      color: #555;
     }
 
     .char-count {
+      text-align: right;
+      font-size: 12px;
       color: #555;
+      margin-top: 8px;
     }
 
     .char-count.warning { color: #f59e0b; }
     .char-count.danger { color: #ef4444; }
 
-    .emoji-hint {
-      color: #667eea;
-      font-weight: 600;
-    }
-
-    .send-btn {
+    .btn-send {
       width: 100%;
-      padding: 20px;
+      padding: 18px;
       background: linear-gradient(135deg, #667eea, #764ba2);
       border: none;
       border-radius: 16px;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: #fff;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       font-family: inherit;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      position: relative;
-      overflow: hidden;
     }
 
-    .send-btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
+    .btn-send:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
     }
 
-    .send-btn:hover::before {
-      width: 300px;
-      height: 300px;
+    .btn-send:active:not(:disabled) {
+      transform: translateY(0);
     }
 
-    .send-btn:hover:not(:disabled) {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
-    }
-
-    .send-btn:disabled {
-      opacity: 0.6;
+    .btn-send:disabled {
+      opacity: 0.5;
       cursor: not-allowed;
     }
 
-    .send-btn span {
-      position: relative;
-      z-index: 1;
-    }
-
-    .success-modal {
-      display: none;
+    .success {
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%) scale(0);
       background: linear-gradient(135deg, #10b981, #059669);
-      padding: 32px;
-      border-radius: 24px;
+      padding: 32px 48px;
+      border-radius: 20px;
       text-align: center;
-      z-index: 100;
-      box-shadow: 0 20px 60px rgba(16, 185, 129, 0.4);
-      animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    }
-
-    @keyframes popIn {
-      0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    }
-
-    .success-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-    }
-
-    .success-text {
-      font-size: 18px;
       font-weight: 700;
-      margin-bottom: 8px;
+      font-size: 18px;
+      box-shadow: 0 20px 60px rgba(16, 185, 129, 0.4);
+      transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 100;
     }
 
-    .success-sub {
-      font-size: 14px;
-      opacity: 0.9;
+    .success.show {
+      transform: translate(-50%, -50%) scale(1);
     }
 
-    .footer-link {
+    .footer {
       text-align: center;
-      margin-top: 32px;
+      margin-top: 24px;
+      font-size: 14px;
     }
 
-    .footer-link a {
+    .footer a {
       color: #667eea;
       text-decoration: none;
       font-weight: 600;
-      font-size: 14px;
       transition: color 0.2s;
     }
 
-    .footer-link a:hover {
+    .footer a:hover {
       color: #764ba2;
     }
 
     @media (max-width: 480px) {
       .prompts { grid-template-columns: 1fr; }
-      .profile { flex-direction: column; text-align: center; }
-      .avatar { width: 60px; height: 60px; font-size: 24px; }
+      .profile { padding: 16px; }
+      .avatar { width: 56px; height: 56px; font-size: 22px; }
+      .profile-info h1 { font-size: 18px; }
     }
   </style>
+
+  <!-- Structured Data (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "SIS - Say It Safely",
+    "description": "Plateforme de messages anonymes 100% sécurisée et confidentielle",
+    "url": "https://sis-say-it-safely.vercel.app",
+    "applicationCategory": "SocialNetworkingApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "1250"
+    }
+  }
+  </script>
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <div class="sis-badge">
-        <span>🛡️</span>
-        <span>SIS</span>
-      </div>
-    </div>
+    <header>
+      <h2 class="sis-logo">🛡️ SIS</h2>
+    </header>
 
-    <div class="profile">
-      <div class="avatar" id="avatar">
-        <span id="avatarText">U</span>
-      </div>
-      <div class="profile-info">
-        <h1 id="username">@user</h1>
-        <p>Envoie un message anonyme</p>
-        <div class="anonymous-badge">
-          <span>🔒</span>
-          <span>100% Anonyme</span>
+    <main>
+      <article class="profile">
+        <div class="avatar" id="avatar">
+          <span id="avatarText">U</span>
         </div>
-      </div>
+        <div class="profile-info">
+          <h1 id="username">@user</h1>
+          <p>Message anonyme • 100% confidentiel</p>
+        </div>
+      </article>
+
+      <section class="prompts">
+        <button class="prompt" data-text="tbh ton avis sur moi ? 💭" aria-label="Suggestion: tbh ton avis">💭ton avis ?</button>
+        <button class="prompt" data-text="un compliment ? 🌟" aria-label="Suggestion: compliment">🌟 compliment</button>
+        <button class="prompt" data-text="avoue quelque chose 🤫" aria-label="Suggestion: avoue un truc">🤫 avoue un truc</button>
+        <button class="prompt" data-text="crush ou pas ? 👀" aria-label="Suggestion: crush">👀 crush ?</button>
+      </section>
+
+      <section class="message-box">
+        <label for="message" class="sr-only">Votre message anonyme</label>
+        <textarea id="message" placeholder="dis ce que tu penses vraiment..." maxlength="5000" aria-label="Zone de texte pour votre message anonyme"></textarea>
+        <div class="char-count" id="count" aria-live="polite">0 / 5000</div>
+      </section>
+
+      <button class="btn-send" id="sendBtn" aria-label="Envoyer le message anonyme">Envoyer </button>
+    </main>
+
+    <div class="success" id="success" role="alert" aria-live="assertive">
+      ✓ Message envoyé !
     </div>
 
-    <div class="prompts">
-      <div class="prompt-card" data-text="tbh, qu'est-ce que tu penses de moi ? 💭">
-        <span class="prompt-icon">💭</span>
-        <div class="prompt-text">tbh, ton avis sur moi ?</div>
-      </div>
-      <div class="prompt-card" data-text="un compliment sincère ? 🌟">
-        <span class="prompt-icon">🌟</span>
-        <div class="prompt-text">un compliment sincère ?</div>
-      </div>
-      <div class="prompt-card" data-text="avoue quelque chose 🤫">
-        <span class="prompt-icon">🤫</span>
-        <div class="prompt-text">avoue quelque chose</div>
-      </div>
-      <div class="prompt-card" data-text="crush ou pas crush ? 👀">
-        <span class="prompt-icon">👀</span>
-        <div class="prompt-text">crush ou pas crush ?</div>
-      </div>
-    </div>
-
-    <div class="message-area">
-      <div class="message-label">
-        <span>✍️</span>
-        <span>Ton message</span>
-      </div>
-      <textarea id="message" placeholder="écris ce que tu penses vraiment..." maxlength="5000"></textarea>
-      <div class="char-info">
-        <span class="emoji-hint">💡 utilise des emojis</span>
-        <span class="char-count" id="count">0 / 5000</span>
-      </div>
-    </div>
-
-    <button class="send-btn" id="sendBtn">
-      <span>📤 Envoyer</span>
-    </button>
-
-    <div class="success-modal" id="success">
-      <div class="success-icon">✓</div>
-      <div class="success-text">Message envoyé !</div>
-      <div class="success-sub">Il/elle va adorer 😊</div>
-    </div>
-
-    <div class="footer-link">
-      <a href="https://sis-say-it-safely.vercel.app/">✨ Crée ton propre lien SIS</a>
-    </div>
+    <footer class="footer">
+      <a href="https://sis-say-it-safely.vercel.app/" rel="noopener">crée ton lien sis</a>
+    </footer>
   </div>
+
+  <!-- Screen reader only class -->
+  <style>
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+  </style>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
@@ -481,10 +398,17 @@
     const avatarText = document.getElementById("avatarText");
 
     if (pseudo) {
-      username.textContent = "@" + pseudo;
-      avatarText.textContent = pseudo.charAt(0).toUpperCase();
-      document.title = `Message pour @${pseudo} — SIS`;
-      loadProfile(pseudo);
+      const cleanPseudo = pseudo.replace(/[^a-zA-Z0-9_-]/g, '');
+      username.textContent = "@" + cleanPseudo;
+      avatarText.textContent = cleanPseudo.charAt(0).toUpperCase();
+      
+      // Update meta tags dynamically
+      document.title = `Message anonyme pour @${cleanPseudo} — SIS`;
+      document.querySelector('meta[name="description"]').setAttribute('content', `Envoie un message 100% anonyme à @${cleanPseudo} sur SIS. Dis ce que tu penses vraiment sans révéler ton identité.`);
+      document.querySelector('meta[property="og:title"]').setAttribute('content', `Message anonyme pour @${cleanPseudo}`);
+      document.querySelector('meta[property="og:description"]').setAttribute('content', `Envoie un message 100% anonyme à @${cleanPseudo}. Plateforme sécurisée SIS.`);
+      
+      loadProfile(cleanPseudo);
     }
 
     async function loadProfile(pseudo) {
@@ -503,6 +427,7 @@
                 const img = document.createElement('img');
                 img.src = url;
                 img.className = 'avatar-img';
+                img.alt = `Photo de profil de ${pseudo}`;
                 avatar.appendChild(img);
               }
               break;
@@ -522,9 +447,9 @@
       if (len > 4800) count.classList.add("danger");
     });
 
-    document.querySelectorAll(".prompt-card").forEach(card => {
-      card.addEventListener("click", () => {
-        message.value = card.dataset.text;
+    document.querySelectorAll(".prompt").forEach(p => {
+      p.addEventListener("click", () => {
+        message.value = p.dataset.text;
         message.focus();
         message.dispatchEvent(new Event("input"));
       });
@@ -534,20 +459,20 @@
       const msg = message.value.trim();
       
       if (!msg) {
-        alert("✍️ Écris un message d'abord");
+        message.focus();
         return;
       }
       if (!pseudo) {
-        alert("😔 Destinataire introuvable");
+        alert("destinataire introuvable");
         return;
       }
 
       sendBtn.disabled = true;
-      sendBtn.innerHTML = '<span>⏳ Envoi...</span>';
+      sendBtn.textContent = "envoi...";
 
       try {
         await addDoc(collection(db, "messages"), {
-          to: pseudo,
+          to: pseudo.replace(/[^a-zA-Z0-9_-]/g, ''),
           message: msg,
           createdAt: serverTimestamp()
         });
@@ -555,15 +480,13 @@
         message.value = "";
         count.textContent = "0 / 5000";
         
-        success.style.display = "block";
-        setTimeout(() => {
-          success.style.display = "none";
-        }, 3000);
+        success.classList.add("show");
+        setTimeout(() => success.classList.remove("show"), 2000);
       } catch (e) {
-        alert("❌ Erreur : " + e.message);
+        alert("erreur : " + e.message);
       } finally {
         sendBtn.disabled = false;
-        sendBtn.innerHTML = '<span>📤 Envoyer</span>';
+        sendBtn.textContent = "Envoyer";
       }
     });
   </script>

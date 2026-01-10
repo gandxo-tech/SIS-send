@@ -1,28 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Envoyer un message anonyme — SIS Say-It-Safely</title>
-  <meta name="description" content="Envoyez facilement des messages anonymes à vos amis, followers ou proches via SIS Say-It-Safely, votre plateforme sécurisée et confidentielle.">
-  <meta name="keywords" content="envoyer message anonyme, chat anonyme, messages privés, sécurisé, confidentialité, SIS, Say-It-Safely">
-  <link rel="canonical" href="https://sis-say-it-safely-pi.vercel.app/envoyer.html">
+  <title>Message pour @user — SIS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
-
-    :root {
-      --primary: #0ea5e9;
-      --secondary: #0284c7;
-      --accent: #38bdf8;
-      --dark: #0c4a6e;
-      --light-blue: #7dd3fc;
-      --sky: #bae6fd;
-      --glass: rgba(255, 255, 255, 0.1);
-      --glass-border: rgba(255, 255, 255, 0.18);
-      --success: #22d3ee;
-      --warning: #06b6d4;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
 
     * {
       margin: 0;
@@ -31,8 +14,8 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0c4a6e 100%);
+      font-family: 'Space Grotesk', sans-serif;
+      background: #050505;
       color: #fff;
       min-height: 100vh;
       display: flex;
@@ -40,199 +23,110 @@
       justify-content: center;
       padding: 20px;
       position: relative;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
     body::before {
       content: '';
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 20% 50%, rgba(56, 189, 248, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.15) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .floating-shapes {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    .shape {
-      position: absolute;
-      opacity: 0.08;
-      animation: float 20s infinite ease-in-out;
-    }
-
-    .shape:nth-child(1) {
-      width: 80px;
-      height: 80px;
-      background: var(--accent);
-      border-radius: 50%;
-      top: 10%;
-      left: 10%;
-      animation-delay: 0s;
-    }
-
-    .shape:nth-child(2) {
-      width: 60px;
-      height: 60px;
-      background: var(--light-blue);
-      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-      top: 60%;
-      right: 10%;
-      animation-delay: 2s;
-    }
-
-    .shape:nth-child(3) {
-      width: 100px;
-      height: 100px;
-      background: var(--sky);
-      border-radius: 50%;
-      bottom: 10%;
+      top: 50%;
       left: 50%;
-      animation-delay: 4s;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(102, 126, 234, 0.15), transparent);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: pulse 4s ease-in-out infinite;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-30px) rotate(180deg); }
-    }
-
-    .sis-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 20px 30px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      z-index: 100;
-      background: var(--glass);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--glass-border);
-    }
-
-    .sis-logo {
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, var(--accent), var(--primary));
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      font-weight: 800;
-      box-shadow: 0 8px 32px rgba(14, 165, 233, 0.3);
-      animation: logoGlow 3s ease-in-out infinite;
-    }
-
-    @keyframes logoGlow {
-      0%, 100% { box-shadow: 0 8px 32px rgba(14, 165, 233, 0.4); }
-      50% { box-shadow: 0 8px 48px rgba(56, 189, 248, 0.6); }
-    }
-
-    .sis-title {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
-
-    .sis-subtitle {
-      font-size: 12px;
-      opacity: 0.8;
-      font-weight: 400;
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+      50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.5; }
     }
 
     .container {
-      position: relative;
-      z-index: 2;
       width: 100%;
       max-width: 480px;
-      margin-top: 80px;
-    }
-
-    .card {
-      background: var(--glass);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 24px;
-      padding: 32px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      animation: slideUp 0.6s ease-out;
-    }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .profile-section {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 24px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--glass-border);
-    }
-
-    .avatar-container {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       position: relative;
-      background: linear-gradient(135deg, var(--dark), #075985);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      z-index: 1;
     }
 
-    .avatar-container::before {
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .sis-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #667eea22, #764ba222);
+      border: 1px solid #667eea44;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      color: #667eea;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+      border: 1px solid #2a2a2a;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile::before {
       content: '';
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-      animation: shimmer 3s infinite;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+      background-size: 200% 100%;
+      animation: shimmer 3s linear infinite;
     }
 
     @keyframes shimmer {
-      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
     }
 
     .avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 700;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .avatar-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      position: relative;
-      z-index: 1;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
 
-    .avatar-placeholder {
-      font-size: 24px;
-      font-weight: 700;
-      color: white;
-      position: relative;
-      z-index: 1;
-    }
-
-    .profile-info h2 {
+    .profile-info h1 {
       font-size: 22px;
       font-weight: 700;
       margin-bottom: 4px;
@@ -240,333 +134,324 @@
 
     .profile-info p {
       font-size: 14px;
-      opacity: 0.7;
+      color: #888;
     }
 
-    .status-badge {
+    .anonymous-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(34, 211, 238, 0.2);
+      background: #667eea22;
       padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
+      border-radius: 12px;
+      font-size: 11px;
       font-weight: 600;
+      color: #667eea;
       margin-top: 8px;
     }
 
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--success);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.6; transform: scale(0.8); }
-    }
-
-    .prompt-section {
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(14, 165, 233, 0.15));
-      border-radius: 20px;
-      padding: 20px;
+    .prompts {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
       margin-bottom: 24px;
-      border: 1px solid rgba(56, 189, 248, 0.2);
     }
 
-    .prompt-section h3 {
-      font-size: 18px;
+    .prompt-card {
+      background: #0f0f0f;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prompt-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .prompt-card:hover::before {
+      left: 100%;
+    }
+
+    .prompt-card:hover {
+      border-color: #667eea;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+    }
+
+    .prompt-icon {
+      font-size: 24px;
       margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .prompt-section p {
-      font-size: 14px;
-      line-height: 1.6;
-      opacity: 0.9;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-label {
       display: block;
+    }
+
+    .prompt-text {
       font-size: 13px;
       font-weight: 600;
-      margin-bottom: 8px;
-      opacity: 0.9;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .input-field {
-      width: 100%;
-      padding: 16px 20px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--glass-border);
-      border-radius: 16px;
       color: #fff;
-      font-size: 15px;
-      font-family: inherit;
-      transition: all 0.3s ease;
+      line-height: 1.4;
     }
 
-    .input-field:focus {
-      outline: none;
-      background: rgba(255, 255, 255, 0.12);
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+    .message-area {
+      background: #0a0a0a;
+      border: 2px solid #2a2a2a;
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+      transition: border-color 0.3s;
     }
 
-    .input-field::placeholder {
-      color: rgba(255, 255, 255, 0.5);
+    .message-area:focus-within {
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
     }
 
-    .input-field[readonly] {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    textarea.input-field {
-      min-height: 140px;
-      resize: vertical;
-      font-family: inherit;
-    }
-
-    .button-row {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 24px;
-    }
-
-    .btn {
-      padding: 16px 24px;
-      border: none;
-      border-radius: 16px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-family: inherit;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--primary));
-      color: #fff;
-      font-size: 16px;
-      padding: 18px;
+    .message-label {
+      font-size: 12px;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
-      box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4);
+      color: #888;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .btn-primary:hover:not(:disabled) {
-      box-shadow: 0 12px 32px rgba(14, 165, 233, 0.5);
-      transform: translateY(-2px);
+    textarea {
+      width: 100%;
+      min-height: 140px;
+      background: transparent;
+      border: none;
+      font-size: 16px;
+      font-family: inherit;
+      color: #fff;
+      resize: vertical;
+      line-height: 1.6;
     }
 
-    .btn-primary:active:not(:disabled) {
-      transform: translateY(0);
+    textarea:focus {
+      outline: none;
     }
 
-    .btn-primary:disabled {
+    textarea::placeholder {
+      color: #444;
+    }
+
+    .char-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      font-size: 12px;
+    }
+
+    .char-count {
+      color: #555;
+    }
+
+    .char-count.warning { color: #f59e0b; }
+    .char-count.danger { color: #ef4444; }
+
+    .emoji-hint {
+      color: #667eea;
+      font-weight: 600;
+    }
+
+    .send-btn {
+      width: 100%;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .send-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .send-btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .send-btn:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
+    }
+
+    .send-btn:disabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
 
-    .notification {
+    .send-btn span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .success-modal {
       display: none;
-      background: linear-gradient(135deg, var(--success), #0891b2);
-      padding: 20px;
-      border-radius: 16px;
-      margin-top: 20px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, #10b981, #059669);
+      padding: 32px;
+      border-radius: 24px;
       text-align: center;
-      animation: slideDown 0.4s ease-out;
-      box-shadow: 0 8px 24px rgba(34, 211, 238, 0.3);
+      z-index: 100;
+      box-shadow: 0 20px 60px rgba(16, 185, 129, 0.4);
+      animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     }
 
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes popIn {
+      0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
     }
 
-    .notification a {
-      color: #fff;
+    .success-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .success-text {
+      font-size: 18px;
       font-weight: 700;
-      text-decoration: underline;
+      margin-bottom: 8px;
     }
 
-    .stats-section {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin: 24px 0;
-      padding: 16px;
-      background: var(--glass);
-      border-radius: 16px;
-      border: 1px solid var(--glass-border);
+    .success-sub {
+      font-size: 14px;
+      opacity: 0.9;
     }
 
-    .stats-number {
-      font-size: 24px;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--light-blue), var(--sky));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .cta-button {
-      display: block;
-      width: 100%;
-      padding: 18px;
-      background: linear-gradient(135deg, var(--dark), #075985);
-      color: #fff;
-      text-decoration: none;
+    .footer-link {
       text-align: center;
-      border-radius: 16px;
+      margin-top: 32px;
+    }
+
+    .footer-link a {
+      color: #667eea;
+      text-decoration: none;
       font-weight: 600;
-      font-size: 15px;
-      margin-top: 16px;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 24px rgba(12, 74, 110, 0.3);
+      font-size: 14px;
+      transition: color 0.2s;
     }
 
-    .cta-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(12, 74, 110, 0.4);
+    .footer-link a:hover {
+      color: #764ba2;
     }
 
-    .footer {
-      text-align: center;
-      margin-top: 24px;
-      padding-top: 24px;
-      border-top: 1px solid var(--glass-border);
-      font-size: 12px;
-      opacity: 0.6;
-    }
-
-    .footer a {
-      color: #fff;
-      text-decoration: none;
-      margin: 0 8px;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 600px) {
-      .sis-header {
-        padding: 16px 20px;
-      }
-
-      .sis-logo {
-        width: 40px;
-        height: 40px;
-        font-size: 20px;
-      }
-
-      .sis-title {
-        font-size: 16px;
-      }
-
-      .container {
-        margin-top: 70px;
-      }
-
-      .card {
-        padding: 24px;
-      }
+    @media (max-width: 480px) {
+      .prompts { grid-template-columns: 1fr; }
+      .profile { flex-direction: column; text-align: center; }
+      .avatar { width: 60px; height: 60px; font-size: 24px; }
     }
   </style>
 </head>
 <body>
-  <div class="floating-shapes">
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="shape"></div>
-  </div>
-
-  <header class="sis-header">
-    <div class="sis-logo">🛡️</div>
-    <div>
-      <div class="sis-title">SIS Say-It-Safely</div>
-      <div class="sis-subtitle">Messages 100% anonymes</div>
-    </div>
-  </header>
-
   <div class="container">
-    <div class="card">
-      <div class="profile-section">
-        <div class="avatar-container" id="avatarContainer">
-          <img class="avatar" id="userAvatar" alt="Avatar" style="display: none;">
-          <div class="avatar-placeholder" id="avatarPlaceholder">👤</div>
-        </div>
-        <div class="profile-info">
-          <h2 id="userName">Chargement...</h2>
-          <p>Accepte les messages anonymes</p>
-          <div class="status-badge">
-            <span class="status-dot"></span>
-            En ligne
-          </div>
-        </div>
+    <div class="header">
+      <div class="sis-badge">
+        <span>🛡️</span>
+        <span>SIS</span>
       </div>
-
-      <div class="prompt-section">
-        <h3>💬 Envoie un message anonyme</h3>
-        <p>Pose une question, partage un secret ou dis simplement bonjour. Ton identité reste 100% confidentielle.</p>
-      </div>
-
-      <form id="messageForm" autocomplete="off">
-        <div class="form-group">
-          <label class="form-label">Destinataire</label>
-          <input type="text" class="input-field" id="receiver" placeholder="@username" readonly />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Ton message anonyme</label>
-          <textarea id="messageInput" class="input-field" placeholder="Écris ton message ici... Personne ne saura que c'est toi 🤫" required></textarea>
-        </div>
-
-        <div class="button-row">
-          <button type="submit" class="btn btn-primary">
-            📤 Envoyer
-          </button>
-        </div>
-      </form>
-
-      <div id="notif" class="notification"></div>
     </div>
 
-    <div class="stats-section">
-      ✨ <span class="stats-number">254</span> messages envoyés aujourd'hui
+    <div class="profile">
+      <div class="avatar" id="avatar">
+        <span id="avatarText">U</span>
+      </div>
+      <div class="profile-info">
+        <h1 id="username">@user</h1>
+        <p>Envoie un message anonyme</p>
+        <div class="anonymous-badge">
+          <span>🔒</span>
+          <span>100% Anonyme</span>
+        </div>
+      </div>
     </div>
 
-    <a href="https://sis-say-it-safely.vercel.app/" class="cta-button">
-      🎁 Crée ton propre lien SIS
-    </a>
+    <div class="prompts">
+      <div class="prompt-card" data-text="tbh, qu'est-ce que tu penses de moi ? 💭">
+        <span class="prompt-icon">💭</span>
+        <div class="prompt-text">tbh, ton avis sur moi ?</div>
+      </div>
+      <div class="prompt-card" data-text="un compliment sincère ? 🌟">
+        <span class="prompt-icon">🌟</span>
+        <div class="prompt-text">un compliment sincère ?</div>
+      </div>
+      <div class="prompt-card" data-text="avoue quelque chose 🤫">
+        <span class="prompt-icon">🤫</span>
+        <div class="prompt-text">avoue quelque chose</div>
+      </div>
+      <div class="prompt-card" data-text="crush ou pas crush ? 👀">
+        <span class="prompt-icon">👀</span>
+        <div class="prompt-text">crush ou pas crush ?</div>
+      </div>
+    </div>
 
-    <div class="footer">
-      <a href="#">Conditions</a> • <a href="#">Confidentialité</a>
+    <div class="message-area">
+      <div class="message-label">
+        <span>✍️</span>
+        <span>Ton message</span>
+      </div>
+      <textarea id="message" placeholder="écris ce que tu penses vraiment..." maxlength="5000"></textarea>
+      <div class="char-info">
+        <span class="emoji-hint">💡 utilise des emojis</span>
+        <span class="char-count" id="count">0 / 5000</span>
+      </div>
+    </div>
+
+    <button class="send-btn" id="sendBtn">
+      <span>📤 Envoyer</span>
+    </button>
+
+    <div class="success-modal" id="success">
+      <div class="success-icon">✓</div>
+      <div class="success-text">Message envoyé !</div>
+      <div class="success-sub">Il/elle va adorer 😊</div>
+    </div>
+
+    <div class="footer-link">
+      <a href="https://sis-say-it-safely.vercel.app/">✨ Crée ton propre lien SIS</a>
     </div>
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import { getDatabase, ref as dbRef, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+    import { getDatabase, ref as dbRef, get } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBqk3L_qkolD41H3yvHEzz4O-Sr15I-Tko",
@@ -575,137 +460,110 @@
       storageBucket: "gandxoanonymous.appspot.com",
       messagingSenderId: "836606625364",
       appId: "1:836606625364:web:7150571998131c41c0cfc1",
-      measurementId: "G-97TCHJ33KW"
+      measurementId: "G-97TCHJ33KW",
+      databaseURL: "https://gandxoanonymous-default-rtdb.firebaseio.com"
     };
 
+    const CLOUDINARY_CLOUD_NAME = 'duddyzckz';
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const database = getDatabase(app);
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const toPseudo = urlParams.get("to");
-    const receiverInput = document.getElementById("receiver");
-    const userAvatar = document.getElementById("userAvatar");
-    const avatarPlaceholder = document.getElementById("avatarPlaceholder");
-    const userName = document.getElementById("userName");
+    const params = new URLSearchParams(window.location.search);
+    const pseudo = params.get("to");
+    
+    const message = document.getElementById("message");
+    const count = document.getElementById("count");
+    const sendBtn = document.getElementById("sendBtn");
+    const success = document.getElementById("success");
+    const username = document.getElementById("username");
+    const avatar = document.getElementById("avatar");
+    const avatarText = document.getElementById("avatarText");
 
-    // Fonction pour afficher l'avatar
-    function displayAvatar(avatarUrl) {
-      if (avatarUrl && avatarUrl.trim() !== '') {
-        userAvatar.src = avatarUrl;
-        userAvatar.style.display = 'block';
-        avatarPlaceholder.style.display = 'none';
-        
-        // Gestion d'erreur de chargement
-        userAvatar.onerror = () => {
-          console.error("Erreur chargement avatar");
-          userAvatar.style.display = 'none';
-          avatarPlaceholder.style.display = 'flex';
-          avatarPlaceholder.textContent = toPseudo ? toPseudo.charAt(0).toUpperCase() : '👤';
-        };
-        
-        userAvatar.onload = () => {
-          console.log("Avatar chargé avec succès");
-        };
-      } else {
-        userAvatar.style.display = 'none';
-        avatarPlaceholder.style.display = 'flex';
-        avatarPlaceholder.textContent = toPseudo ? toPseudo.charAt(0).toUpperCase() : '👤';
-      }
+    if (pseudo) {
+      username.textContent = "@" + pseudo;
+      avatarText.textContent = pseudo.charAt(0).toUpperCase();
+      document.title = `Message pour @${pseudo} — SIS`;
+      loadProfile(pseudo);
     }
 
-    // Charger les informations de l'utilisateur depuis Firebase
-    if (toPseudo) {
-      receiverInput.value = "@" + decodeURIComponent(toPseudo);
-      userName.textContent = "@" + decodeURIComponent(toPseudo);
-
-      console.log("Recherche de l'utilisateur:", decodeURIComponent(toPseudo));
-
-      // Chercher l'utilisateur dans la base de données
-      const usersRef = dbRef(database, 'users');
-      get(usersRef).then((snapshot) => {
+    async function loadProfile(pseudo) {
+      try {
+        const usersRef = dbRef(database, 'users');
+        const snapshot = await get(usersRef);
+        
         if (snapshot.exists()) {
           const users = snapshot.val();
-          console.log("Utilisateurs trouvés:", Object.keys(users).length);
-          
-          // Trouver l'utilisateur avec le pseudo correspondant
-          const userEntry = Object.entries(users).find(([uid, userData]) => 
-            userData.pseudo === decodeURIComponent(toPseudo)
-          );
-
-          if (userEntry) {
-            const [uid, userData] = userEntry;
-            console.log("Utilisateur trouvé:", userData);
-            
-            // Mettre à jour l'avatar
-            if (userData.avatar) {
-              displayAvatar(userData.avatar);
-            } else {
-              // Avatar par défaut généré
-              const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
-              displayAvatar(defaultAvatar);
+          for (const uid in users) {
+            if (users[uid].pseudo === pseudo) {
+              const user = users[uid];
+              
+              if (user.cloudinaryPublicId) {
+                const url = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${user.cloudinaryPublicId}`;
+                const img = document.createElement('img');
+                img.src = url;
+                img.className = 'avatar-img';
+                avatar.appendChild(img);
+              }
+              break;
             }
-          } else {
-            console.log("Utilisateur non trouvé, utilisation avatar par défaut");
-            // Utilisateur non trouvé, utiliser avatar par défaut
-            const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
-            displayAvatar(defaultAvatar);
           }
-        } else {
-          console.log("Pas d'utilisateurs dans la base");
-          // Pas d'utilisateurs, utiliser avatar par défaut
-          const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
-          displayAvatar(defaultAvatar);
         }
-      }).catch((error) => {
-        console.error("Erreur chargement utilisateur:", error);
-        // En cas d'erreur, utiliser avatar par défaut
-        const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(toPseudo)}&background=0ea5e9&color=ffffff&size=200`;
-        displayAvatar(defaultAvatar);
-      });
-    } else {
-      // Pas de pseudo dans l'URL
-      avatarPlaceholder.textContent = '👤';
+      } catch (e) {
+        console.error(e);
+      }
     }
 
-    document.getElementById("messageForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const msg = document.getElementById("messageInput").value.trim();
-      const sendBtn = document.querySelector('.btn-primary');
+    message.addEventListener("input", () => {
+      const len = message.value.length;
+      count.textContent = `${len} / 5000`;
+      count.classList.remove("warning", "danger");
+      if (len > 4000) count.classList.add("warning");
+      if (len > 4800) count.classList.add("danger");
+    });
 
+    document.querySelectorAll(".prompt-card").forEach(card => {
+      card.addEventListener("click", () => {
+        message.value = card.dataset.text;
+        message.focus();
+        message.dispatchEvent(new Event("input"));
+      });
+    });
+
+    sendBtn.addEventListener("click", async () => {
+      const msg = message.value.trim();
+      
       if (!msg) {
-        alert("📝 Entre un message avant d'envoyer !");
+        alert("✍️ Écris un message d'abord");
         return;
       }
-      if (!toPseudo) {
-        alert("😔 Pseudo destinataire introuvable !");
+      if (!pseudo) {
+        alert("😔 Destinataire introuvable");
         return;
       }
 
       sendBtn.disabled = true;
-      sendBtn.textContent = "⏳ Envoi...";
+      sendBtn.innerHTML = '<span>⏳ Envoi...</span>';
 
       try {
         await addDoc(collection(db, "messages"), {
-          to: toPseudo,
+          to: pseudo,
           message: msg,
           createdAt: serverTimestamp()
         });
 
-        document.getElementById("messageInput").value = "";
-        const notif = document.getElementById("notif");
-        notif.innerHTML = `✅ Message envoyé avec succès !<br><br>
-        <a href="https://sis-say-it-safely.vercel.app/" target="_blank">Crée ton propre lien SIS →</a>`;
-        notif.style.display = "block";
-
+        message.value = "";
+        count.textContent = "0 / 5000";
+        
+        success.style.display = "block";
         setTimeout(() => {
-          notif.style.display = "none";
-        }, 8000);
-      } catch (error) {
-        alert("❌ Erreur lors de l'envoi : " + error.message);
+          success.style.display = "none";
+        }, 3000);
+      } catch (e) {
+        alert("❌ Erreur : " + e.message);
       } finally {
         sendBtn.disabled = false;
-        sendBtn.innerHTML = "📤 Envoyer";
+        sendBtn.innerHTML = '<span>📤 Envoyer</span>';
       }
     });
   </script>
